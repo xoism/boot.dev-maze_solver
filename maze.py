@@ -1,4 +1,5 @@
 
+import random
 from time import sleep
 
 from cell import Cell
@@ -6,7 +7,10 @@ from window import Point, Window
 
 
 class Maze:
-    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window = None):
+    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window = None, seed: int = None):
+        if seed is not None:
+            random.seed(seed)
+
         self._top_left = top_left
         self._rows = rows
         self._columns = columns
@@ -16,7 +20,9 @@ class Maze:
 
         self._create_cells()
         self._break_entrance_and_exit()
-    
+        self._break_walls(0, 0)
+        print('maze ready')
+
     def _create_cells(self):
         for x in range(self._rows):
             row = []
@@ -45,3 +51,36 @@ class Maze:
         self._draw_cell(0, 0)
         self._cells[-1][-1].bottom_wall = False
         self._draw_cell(-1, -1)
+
+    def _break_walls(self, i, j):
+        self._cells[i][j].visited = True
+        while True:
+            neighbors = [
+                (x, y, d)
+                for x, y, d in filter(
+                    lambda x: 0 <= x[0] < self._rows and 0 <= x[1] < self._columns,
+                    [(i-1, j, 'u'), (i+1, j, 'd'), (i, j-1, 'l'), (i, j+1, 'r')]
+                )
+                if not self._cells[x][y].visited
+            ]
+            
+            if len(neighbors) == 0:
+                self._draw_cell(i, j)
+                return
+
+            x, y, d = random.choice(neighbors)
+            match d:
+                case 'l':
+                    self._cells[i][j].left_wall = False
+                    self._cells[x][y].right_wall = False
+                case 'r':
+                    self._cells[i][j].right_wall = False
+                    self._cells[x][y].left_wall = False
+                case 'u':
+                    self._cells[i][j].top_wall = False
+                    self._cells[x][y].bottom_wall = False
+                case 'd':
+                    self._cells[i][j].bottom_wall = False
+                    self._cells[x][y].top_wall = False
+
+            self._break_walls(x, y)

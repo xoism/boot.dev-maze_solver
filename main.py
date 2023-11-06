@@ -47,9 +47,10 @@ def main():
     #     previous_cell = cell
 
     ## test drawing maze
-    maze_loc = center_maze(10, 10, 30, 800, 600)
-    win.draw_line(Line(Point(400,300), Point(430, 330)), 'red')
-    maze = Maze(maze_loc, 10, 10, 30, win)
+    rows, columns, size = 17, 13, 30
+    maze_loc = center_maze(rows, columns, size, 800, 600)
+    # win.draw_line(Line(Point(400,300), Point(430, 330)), 'red')
+    maze = Maze(maze_loc, rows, columns, size, win, 2)
 
     win.wait_for_close()
 

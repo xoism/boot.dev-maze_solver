@@ -18,6 +18,7 @@ class Cell:
             (top_left.y + bottom_right.y) // 2
         )
         self._win = window
+        self.visited = False
     
     @property
     def center(self) -> Point:
@@ -41,3 +42,7 @@ class Cell:
 
     def __repr__(self) -> str:
         return str(self)
+
+    def walls(self):
+        return (self.left_wall, self.right_wall, self.top_wall, self.bottom_wall)
+        
