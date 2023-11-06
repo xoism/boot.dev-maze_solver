@@ -26,14 +26,10 @@ class Cell:
     def draw(self, color:str = 'black'):
         if self._win is None:
             return
-        if self.left_wall:
-            self._win.draw_line(Line(self._top_left, self._bottom_left), fill_color=color)
-        if self.right_wall:
-            self._win.draw_line(Line(self._top_right, self._bottom_right), fill_color=color)
-        if self.top_wall:
-            self._win.draw_line(Line(self._top_left, self._top_right), fill_color=color)
-        if self.bottom_wall:
-            self._win.draw_line(Line(self._bottom_left, self._bottom_right), fill_color=color)
+        self._win.draw_line(Line(self._top_left, self._bottom_left), fill_color=color if self.left_wall else self._win.bg)
+        self._win.draw_line(Line(self._top_right, self._bottom_right), fill_color=color if self.right_wall else self._win.bg)
+        self._win.draw_line(Line(self._top_left, self._top_right), fill_color=color if self.top_wall else self._win.bg)
+        self._win.draw_line(Line(self._bottom_left, self._bottom_right), fill_color=color if self.bottom_wall else self._win.bg)
 
     def draw_move(self, to_cell: Cell, undo:bool = False):
         if self._win is None:

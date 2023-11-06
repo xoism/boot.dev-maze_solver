@@ -56,3 +56,6 @@ class Window:
     def draw_line(self, line: Line, fill_color:str = 'black'):
         line.draw(self.canvas, fill_color)
 
+    @property
+    def bg(self):
+        return self.canvas.cget('bg')
