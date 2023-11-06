@@ -6,7 +6,7 @@ from window import Point, Window
 
 
 class Maze:
-    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window):
+    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window = None):
         self._top_left = top_left
         self._rows = rows
         self._columns = columns
@@ -34,5 +34,7 @@ class Maze:
         self._animate()
 
     def _animate(self):
+        if self._win is None:
+            return
         self._win.redraw()
         sleep(0.05)

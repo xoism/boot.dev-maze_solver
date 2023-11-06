@@ -4,7 +4,7 @@ from __future__ import annotations
 from window import Line, Point, Window
 
 class Cell:
-    def __init__(self, top_left: Point, bottom_right: Point, window: Window):
+    def __init__(self, top_left: Point, bottom_right: Point, window: Window = None):
         self.left_wall = True
         self.right_wall = True
         self.top_wall = True
@@ -24,6 +24,8 @@ class Cell:
         return self._center
 
     def draw(self, color:str = 'black'):
+        if self._win is None:
+            return
         if self.left_wall:
             self._win.draw_line(Line(self._top_left, self._bottom_left), fill_color=color)
         if self.right_wall:
@@ -34,6 +36,8 @@ class Cell:
             self._win.draw_line(Line(self._bottom_left, self._bottom_right), fill_color=color)
 
     def draw_move(self, to_cell: Cell, undo:bool = False):
+        if self._win is None:
+            return
         self._win.draw_line(Line(self.center, to_cell.center), 'red' if undo else 'gray')
 
     def __str__(self) -> str:
@@ -41,4 +45,3 @@ class Cell:
 
     def __repr__(self) -> str:
         return str(self)
-        
