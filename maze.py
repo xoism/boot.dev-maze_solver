@@ -1,4 +1,5 @@
 
+import itertools
 import random
 from time import sleep
 
@@ -7,9 +8,11 @@ from window import Point, Window
 
 
 class Maze:
-    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window = None, seed: int = None):
+    def __init__(self, top_left: Point, rows:int, columns: int, cell_size: int, win: Window = None, seed: int = None, anim_delay: float = 0.01):
         if seed is not None:
             random.seed(seed)
+
+        self.anim_delay = anim_delay
 
         self._top_left = top_left
         self._rows = rows
@@ -21,6 +24,7 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls(0, 0)
+        self._reset_visited()
         print('maze ready')
 
     def _create_cells(self):
@@ -44,7 +48,7 @@ class Maze:
         if self._win is None:
             return
         self._win.redraw()
-        sleep(0.02)
+        sleep(self.anim_delay)
 
     def _break_entrance_and_exit(self):
         self._cells[0][0].top_wall = False
@@ -63,7 +67,7 @@ class Maze:
                 )
                 if not self._cells[x][y].visited
             ]
-            
+
             if len(neighbors) == 0:
                 self._draw_cell(i, j)
                 return
@@ -84,3 +88,7 @@ class Maze:
                     self._cells[x][y].top_wall = False
 
             self._break_walls(x, y)
+
+    def _reset_visited(self):
+        for cell in itertools.chain.from_iterable(self._cells):
+            cell.visited = False

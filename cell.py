@@ -45,4 +45,3 @@ class Cell:
 
     def walls(self):
         return (self.left_wall, self.right_wall, self.top_wall, self.bottom_wall)
-        
